@@ -60,7 +60,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 exports.__esModule = true;
-var react_1 = require("react");
+var React = require("react");
 var applicationinsights_web_1 = require("@microsoft/applicationinsights-web");
 var IS_BROWSER = typeof window !== "undefined";
 var isDev = function () {
@@ -102,10 +102,10 @@ exports.withApplicationInsights = function (config) {
                     window.appInsights = appInsights;
                 };
                 WithApplicationInsights.prototype.render = function () {
-                    return <App {...this.props}/>;
+                    return React.createElement(App, this.props);
                 };
                 return WithApplicationInsights;
-            }(react_1.Component)),
+            }(React.Component)),
             _a.getInitialProps = function (appCtx) { return __awaiter(_this, void 0, void 0, function () {
                 var appProps, _a;
                 return __generator(this, function (_b) {

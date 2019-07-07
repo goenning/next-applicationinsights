@@ -2,6 +2,6 @@ src
 pages
 .babelrc
 tsconfig.json
-next.config.json
+next.config.js
 .vscode
 .next

@@ -1,4 +1,4 @@
-import { Component, ComponentType } from 'react';
+import * as React from 'react';
 import { AppProps, default as NextApp, DefaultAppIProps, NextAppContext } from 'next/app';
 
 import { ApplicationInsights, IConfiguration, IConfig } from '@microsoft/applicationinsights-web'
@@ -19,7 +19,7 @@ const isDev = () => {
   return process.env.NODE_ENV !== "production";
 }
 
-const getComponentName = (component?: ComponentType<any>) => {
+const getComponentName = (component?: React.ComponentType<any>) => {
   if (component) {
     return component.displayName || component.name;
   }
@@ -28,7 +28,7 @@ const getComponentName = (component?: ComponentType<any>) => {
 
 export const withApplicationInsights = (config: IConfiguration & IConfig) => {
   return (App: typeof NextApp) => {``
-    return class WithApplicationInsights extends Component<WithApplicationInsightsProps & AppProps & DefaultAppIProps> {
+    return class WithApplicationInsights extends React.Component<WithApplicationInsightsProps & AppProps & DefaultAppIProps> {
       public static getInitialProps = async (appCtx: NextAppContext) => {
         let appProps: DefaultAppIProps = { pageProps: {} };
         if (App.getInitialProps) {
@@ -64,7 +64,7 @@ export const withApplicationInsights = (config: IConfiguration & IConfig) => {
       }
 
       public render() {
-        return <App {...this.props} />;
+        return React.createElement(App, this.props);
       }
     }
   };

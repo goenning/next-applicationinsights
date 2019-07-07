@@ -5,7 +5,8 @@
   "main": "./dist/index.js",
   "scripts": {
     "dev": "next",
-    "build": "rm -rf dist && tsc src/index.ts --outDir dist"
+    "build": "rm -rf dist && tsc src/index.ts --outDir dist",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "next",

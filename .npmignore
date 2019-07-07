@@ -1,0 +1,7 @@
+src
+pages
+.babelrc
+tsconfig.json
+next.config.json
+.vscode
+.next

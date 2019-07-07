@@ -1,21 +1,29 @@
 {
   "name": "next-applicationinsights",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "React higher-order component for using Azure Application Insights inside Next.js",
+  "main": "./dist/index.js",
   "scripts": {
     "dev": "next",
-    "build": "next build",
-    "start": "next start"
+    "build": "tsc src/index.tsx --outDir dist --jsx preserve"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "next",
+    "react",
+    "analytics",
+    "azure application insights"
+  ],
+  "license": "MIT",
+  "author": "goenning",
+  "dependencies": {
+    "@microsoft/applicationinsights-web": "^2.1.0"
+  },
   "peerDependencies": {
     "next": "^8.0.0",
     "react": "^16.0.0"
   },
   "devDependencies": {
+    "@types/next": "^8.0.5",
     "@types/react": "^16.8.23",
     "@zeit/next-typescript": "^1.1.1",
     "next": "^8.1.0",

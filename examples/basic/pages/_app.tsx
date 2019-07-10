@@ -1,14 +1,11 @@
 import React from 'react'
-import App, { Container, NextAppContext } from 'next/app'
-import { withApplicationInsights } from '../src';
+import App, { Container, AppContext } from 'next/app'
+import { withApplicationInsights } from '../../../dist';
 
 class MyApp extends App {
-  static async getInitialProps(ctx: NextAppContext) {
-    if (ctx.Component.getInitialProps) {
-      return await ctx.Component.getInitialProps(ctx.ctx)
-    }
-
-    return { }
+  static async getInitialProps({ Component, ctx }: AppContext) {
+    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+    return { pageProps }
   }
 
   render() {

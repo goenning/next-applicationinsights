@@ -1,7 +1,5 @@
 src
 pages
-.babelrc
-tsconfig.json
-next.config.js
+examples/
 .vscode
 .next

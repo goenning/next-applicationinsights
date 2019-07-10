@@ -4,8 +4,8 @@ import Link from 'next/link';
 
 function About() {
   return <div>
-    <p>This is the about page</p>
-    <Link href="/"><a>Home</a></Link>
+    <h1>This is the about page</h1>
+    <Link href="/"><a>Go to home page</a></Link>
   </div>
 }
 

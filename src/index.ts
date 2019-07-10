@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { AppProps, default as NextApp, DefaultAppIProps, NextAppContext } from 'next/app';
+import { AppProps, default as NextApp, AppContext } from 'next/app';
+import Router from 'next/router';
 
 import { ApplicationInsights, IConfiguration, IConfig } from '@microsoft/applicationinsights-web'
 
@@ -16,7 +17,7 @@ declare global {
 }
 
 const isDev = () => {
-  return process.env.NODE_ENV !== "production";
+  return false; //process.env.NODE_ENV !== "production";
 }
 
 const getComponentName = (component?: React.ComponentType<any>) => {
@@ -26,11 +27,13 @@ const getComponentName = (component?: React.ComponentType<any>) => {
   return undefined;
 }
 
+let appInsights: ApplicationInsights;
+
 export const withApplicationInsights = (config: IConfiguration & IConfig) => {
   return (App: typeof NextApp) => {``
-    return class WithApplicationInsights extends React.Component<WithApplicationInsightsProps & AppProps & DefaultAppIProps> {
-      public static getInitialProps = async (appCtx: NextAppContext) => {
-        let appProps: DefaultAppIProps = { pageProps: {} };
+    return class WithApplicationInsights extends React.Component<WithApplicationInsightsProps & AppProps> {
+      public static getInitialProps = async (appCtx: AppContext) => {
+        let appProps = { pageProps: {} };
         if (App.getInitialProps) {
           appProps = {...appProps, ...await App.getInitialProps(appCtx) };
         }
@@ -41,29 +44,41 @@ export const withApplicationInsights = (config: IConfiguration & IConfig) => {
       }
 
       public componentDidMount() {
+        console.log('componentDidMount');
         if (!IS_BROWSER || isDev()) {
           return;
         }
 
-        const trackOnRouteChange = (url: string) => {
-          let name = url;
-          const component = this.props.router.components[url];
-          if (component) {
-            name = getComponentName(component.Component) || url;
-          }
-          appInsights.trackPageView({ name });
+        this.initializeAppInsights();
+        this.trackPageView();
+      }
+
+      private initializeAppInsights() {
+        if (!appInsights) {
+          appInsights = new ApplicationInsights({ config });
+          appInsights.loadAppInsights();
+          window.appInsights = appInsights;
         }
+      }
 
-        this.props.router.events.on('routeChangeComplete', (url: string) => trackOnRouteChange(url));
-        this.props.router.events.on('routeChangeError', (url: string) => trackOnRouteChange(url));
-
-        const appInsights = new ApplicationInsights({ config });
-        appInsights.loadAppInsights();
-        appInsights.trackPageView({ name: this.props.pageName });
-        window.appInsights = appInsights;
+      private trackPageView() {
+        if (appInsights) {
+          console.log(this.props);
+          const name = getComponentName(this.props.Component) || location.pathname;
+          const properties = {
+            route: this.props.router.route,
+          }
+          if (this.props.router.query) {
+            for (const key in this.props.router.query) {
+              properties[`query.${key}`] = this.props.router.query[key];
+            }
+          }
+          appInsights.trackPageView({ name, properties });
+        }
       }
 
       public render() {
+        this.trackPageView();
         return React.createElement(App, this.props);
       }
     }

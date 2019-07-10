@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { AppProps, default as NextApp, AppContext } from 'next/app';
-import Router from 'next/router';
 
 import { ApplicationInsights, IConfiguration, IConfig } from '@microsoft/applicationinsights-web'
 
@@ -16,21 +15,14 @@ declare global {
   }
 }
 
-const isDev = () => {
-  return false; //process.env.NODE_ENV !== "production";
-}
-
-const getComponentName = (component?: React.ComponentType<any>) => {
-  if (component) {
-    return component.displayName || component.name;
-  }
-  return undefined;
-}
-
 let appInsights: ApplicationInsights;
 
-export const withApplicationInsights = (config: IConfiguration & IConfig) => {
-  return (App: typeof NextApp) => {``
+export interface ICustomConfig {
+  isEnabled: boolean;
+}
+
+export const withApplicationInsights = (config: IConfiguration & IConfig & ICustomConfig) => {
+  return (App: typeof NextApp) => {
     return class WithApplicationInsights extends React.Component<WithApplicationInsightsProps & AppProps> {
       public static getInitialProps = async (appCtx: AppContext) => {
         let appProps = { pageProps: {} };
@@ -38,33 +30,26 @@ export const withApplicationInsights = (config: IConfiguration & IConfig) => {
           appProps = {...appProps, ...await App.getInitialProps(appCtx) };
         }
         return { 
-          ...appProps,
-          pageName: getComponentName(appCtx.Component) || location.pathname
+          ...appProps
         };
       }
 
       public componentDidMount() {
-        console.log('componentDidMount');
-        if (!IS_BROWSER || isDev()) {
-          return;
-        }
-
         this.initializeAppInsights();
         this.trackPageView();
       }
 
-      private initializeAppInsights() {
-        if (!appInsights) {
+      public initializeAppInsights() {
+        if (IS_BROWSER && config.isEnabled && !appInsights) {
           appInsights = new ApplicationInsights({ config });
           appInsights.loadAppInsights();
           window.appInsights = appInsights;
         }
       }
 
-      private trackPageView() {
+      public trackPageView() {
         if (appInsights) {
-          console.log(this.props);
-          const name = getComponentName(this.props.Component) || location.pathname;
+          const name = this.props.Component.displayName || this.props.Component.name || location.pathname;
           const properties = {
             route: this.props.router.route,
           }

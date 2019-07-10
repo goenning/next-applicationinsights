@@ -20,5 +20,6 @@ class MyApp extends App {
 }
 
 export default withApplicationInsights({ 
-  instrumentationKey: 'e59928a0-1de7-443d-bb4d-72aa5fd39132'
+  instrumentationKey: 'YOUR_KEY_GOES_HERE',
+  isEnabled: true //process.env.NODE_ENV === 'production'
 })(MyApp)

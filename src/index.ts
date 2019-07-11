@@ -39,6 +39,12 @@ export const withApplicationInsights = (config: IConfiguration & IConfig & ICust
         this.trackPageView();
       }
 
+      public componentDidCatch(error: Error) {
+        if (appInsights) {
+          appInsights.trackException({ exception: error });
+        }
+      }
+
       public initializeAppInsights() {
         if (IS_BROWSER && config.isEnabled && !appInsights) {
           appInsights = new ApplicationInsights({ config });

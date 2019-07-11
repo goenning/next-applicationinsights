@@ -1,13 +1,8 @@
 import React from 'react'
-import App, { Container, AppContext } from 'next/app'
+import App, { Container } from 'next/app'
 import { withApplicationInsights } from '../../../dist';
 
 class MyApp extends App {
-  static async getInitialProps({ Component, ctx }: AppContext) {
-    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
-    return { pageProps }
-  }
-
   render() {
     const { Component, pageProps } = this.props
 

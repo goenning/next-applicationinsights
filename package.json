@@ -1,6 +1,6 @@
 {
   "name": "next-applicationinsights",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "React higher-order component for using Azure Application Insights inside Next.js",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -19,6 +19,13 @@
   "author": "goenning",
   "dependencies": {
     "@microsoft/applicationinsights-web": "^2.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/goenning/next-applicationinsights.git"
+  },
+  "bugs": {
+    "url": "https://github.com/goenning/next-applicationinsights/issues"
   },
   "peerDependencies": {
     "next": "^9.0.0",

@@ -29,7 +29,7 @@ export const withApplicationInsights = (config: IConfiguration & IConfig & ICust
         if (App.getInitialProps) {
           appProps = {...appProps, ...await App.getInitialProps(appCtx) };
         }
-        return { 
+        return {
           ...appProps
         };
       }
@@ -70,7 +70,7 @@ export const withApplicationInsights = (config: IConfiguration & IConfig & ICust
 
       public render() {
         this.trackPageView();
-        return React.createElement(App, this.props);
+        return React.createElement(App as any, this.props);
       }
     }
   };

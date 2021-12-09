@@ -28,13 +28,13 @@
     "url": "https://github.com/goenning/next-applicationinsights/issues"
   },
   "peerDependencies": {
-    "next": "^9.0.0",
+    "next": "^11.1.3",
     "react": "^16.0.0"
   },
   "devDependencies": {
     "@types/node": "^12.6.2",
     "@types/react": "^16.8.23",
-    "next": "^9.0.0",
+    "next": "^11.1.3",
     "react": "^16.8.6",
     "typescript": "^3.5.2"
   }
